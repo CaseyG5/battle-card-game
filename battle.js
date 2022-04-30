@@ -122,7 +122,61 @@ class Player {
         // this.wonLastGame;                useful for "loser plays first" rule
     }
 
-    
+    getName() {
+        return this.name;
+    }
+
+    playCard() {
+        this.lastCardPlayed = this.cardsFaceDown.pop();  // play a card from their pile
+    }
+
+    getLastCardPlayed() {
+        return this.lastCardPlayed;
+    }
+
+    addPoint() {
+        this.points++;
+    }
+
+    getPoints() {
+        return this.points;
+    }
 }
 
+let deck1 = new Deck();
+//deck1.list();
 
+let player1 = new Player("Yogi Bear");
+let player2 = new Player("George Jetson");
+
+deck1.dealDeck(player1, player2);
+
+alert("Deck has been shuffled and dealt to 2 players:\n" +
+        player1.getName() + "  and  " + player2.getName() +
+        "\n\nClick OK to watch them \"Battle\".");
+
+let rankOfCardPlayedByP1, rankOfCardPlayedByP2;
+let p1Points, p2Points;
+
+for(let i = 0; i < 26; i++) {
+    player1.playCard();
+    player2.playCard();
+
+    rankOfCardPlayedByP1 = player1.getLastCardPlayed().getRank();
+    rankOfCardPlayedByP2 = player2.getLastCardPlayed().getRank();
+
+    if( rankOfCardPlayedByP1 > rankOfCardPlayedByP2 )
+        player1.addPoint();
+    else if( rankOfCardPlayedByP2 > rankOfCardPlayedByP1 )
+        player2.addPoint();
+    // else no points added
+
+    alert(`${player1.getName()} plays a ${player1.getLastCardPlayed().getRankAndSuit()}
+${player2.getName()} plays a ${player2.getLastCardPlayed().getRankAndSuit()}
+    
+The score is ${player1.getPoints()} to ${player2.getPoints()}`);
+}
+
+alert(`The final score is:
+${player1.getName()} - ${player1.getPoints()} points
+${player2.getName()} - ${player2.getPoints()} points`)
