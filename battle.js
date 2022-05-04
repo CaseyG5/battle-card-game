@@ -1,4 +1,3 @@
-
 // Cards are represented by a RANK and a SUIT, e.g. 11 (Jack) of Diamonds
 class Card {
     constructor(rank, suit) {
@@ -67,38 +66,30 @@ class Deck {
                 
                 // CRUDE algorithm to pre-shuffle the deck
                 position = Math.floor(Math.random() * 52) + 1;      // pick a random slot, 1-52
-                // console.log(`position ${position}`);
-                // console.log(this.cards[position]);
 
-                // if the slot is not empty (already taken)
+                // if the slot is NOT empty (already taken)
                 while(this.cards[position] != undefined) {     
                     // try another one     
                     position = Math.floor(Math.random() * 52) + 1;  
                 }
-
-                //console.log(`Adding card "${rank} of ${suit}" to deck at position ${position}`);
+                
+                console.log(`Adding card "${r} of ${suit}" to deck at position ${position}`);
                 this.cards[position] = new Card(r, suit);
             }
         }
     }
-
-    shuffle() {
-        
-    }
-
     
     // deal entire deck to 2 players  (26 cards per player)
     dealDeck(player1, player2) {
+        // check arguments
+        if( !(player1 instanceof Player) || !(player2 instanceof Player) ) 
+            throw new Error("Both arguments must be of type \"Player\"");
+        
         for( let c = 0; c < 26; c++ ) {
             player1.cardsFaceDown.push(this.cards.pop());
             player2.cardsFaceDown.push(this.cards.pop());
         }
-            
-    }
-
-    // deal a starting # of cards given an array of players 
-    deal(arrayOfPlayers, cardsPerPlayer) {
-
+        return true;  
     }
 
     startGame(player1, player2) {
@@ -140,15 +131,13 @@ The score is ${player1.getPoints()} to ${player2.getPoints()}`);
         // Show final score
         alert(`The final score is:
         ${player1.getName()} - ${player1.getPoints()} points
-        ${player2.getName()} - ${player2.getPoints()} points`)
-
-
+        ${player2.getName()} - ${player2.getPoints()} points`);
     }
 
     // for testing //
     list() {
         for( let i = 1; i < 53; i++ ) {
-            console.log(this.cards[i]);
+            console.log( this.cards[i].getRankAndSuit() );
         }
     }
 }
@@ -189,12 +178,14 @@ class Player {
     }
 }
 
+
 // Create a Deck object
 let deck1 = new Deck();
 
 // Create 2 Player objects (prompt for names)
-let player1 = new Player( prompt("Enter a name for Player 1", "George Jetson") );
-let player2 = new Player( prompt("Enter a name for player 2", "Yogi Bear") );
+
+let player1 = new Player( "Chuck Norris" );
+let player2 = new Player( "JC Van Damme" );
 
 // Let the game begin
 deck1.startGame(player1, player2);
